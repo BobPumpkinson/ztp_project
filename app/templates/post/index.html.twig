@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.post_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.post_list'|trans }}</h1>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ url('post_create') }}" title="{{ 'action.create'|trans }}" class="button">
+            {{ 'action.create'|trans }}
+        </a>
+    {% endif %}
+
+    {% if pagination is defined and pagination.items|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label.id'|trans, 'post.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.created_at'|trans, 'post.createdAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.updated_at'|trans, 'post.updatedAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.title'|trans, 'post.title') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.category'|trans, 'category.title') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.tags'|trans, 'tag.title') }}</th>
+                <th>{{ 'label.actions'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for post in pagination.items %}
+                <tr>
+                    <td>{{ post.id }}</td>
+                    <td>{{ post.createdAt|date('Y/m/d') }}</td>
+                    <td>{{ post.updatedAt|date('Y/m/d') }}</td>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.category.title }}</td>
+                    <td>
+                        {% if post.tags is defined and post.tags|length %}
+                            {% for tag in post.tags %}
+                                <a href="{{ url('post_index', {'filters.tag_id' : tag.id}) }}" title="{{ tag.title }}">
+                                    {{ tag.title }}
+                                </a>
+                            {% endfor %}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url('post_view', {id: post.id}) }}" title="{{ 'action.view'|trans }}" class="button">
+                            {{ 'action.view'|trans }}
+                        </a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ url('post_edit', {id: post.id}) }}" title="{{ 'action.edit'|trans }}" class="button">
+                                {{ 'action.edit'|trans }}
+                            </a>
+                            <a href="{{ url('post_delete', {id: post.id}) }}" title="{{ 'action.delete'|trans }}" class="button">
+                                {{ 'action.delete'|trans }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>
+            {{ 'message.empty_list'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}
