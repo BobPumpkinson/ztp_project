@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Hello controller tests.
  */
@@ -13,18 +14,19 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class HelloControllerTest extends WebTestCase
 {
     /**
-     * Test '/hello' roure.
+     * Test '/hello' route.
      */
     public function testHelloRoute(): void
     {
         // given
         $client = static::createClient();
+        $expectedStatusCode = 200;
 
         // when
         $client->request('GET', '/hello');
         $resultHttpStatusCode = $client->getResponse()->getStatusCode();
 
         // then
-        $this->assertEquals(200, $resultHttpStatusCode);
+        $this->assertEquals($expectedStatusCode, $resultHttpStatusCode);
     }
 }

@@ -74,4 +74,3 @@ class PostFixtures extends AbstractBaseFixtures implements DependentFixtureInter
         return [CategoryFixtures::class];
     }
 }
-

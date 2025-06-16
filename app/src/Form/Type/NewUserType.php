@@ -1,4 +1,5 @@
 <?php
+
 /**
  * New User type.
  */

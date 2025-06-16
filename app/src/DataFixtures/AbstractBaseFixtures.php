@@ -149,4 +149,3 @@ abstract class AbstractBaseFixtures extends Fixture
         return $referenceNameList;
     }
 }
-
