@@ -253,7 +253,8 @@ class Post
     /**
      * Add Comment.
      *
-     * @param Comment $comment
+     * @param Comment $comment comment
+     *
      * @return $this
      */
     public function addComment(Comment $comment): self
@@ -269,7 +270,8 @@ class Post
     /**
      * Remove Comment.
      *
-     * @param Comment $comment
+     * @param Comment $comment comment
+     *
      * @return $this
      */
     public function removeComment(Comment $comment): self

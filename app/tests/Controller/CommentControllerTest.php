@@ -95,4 +95,183 @@ class CommentControllerTest extends WebTestCase
         $this->assertEquals($expectedStatusCode, $resultHttpStatusCode);
         $this->assertStringContainsString('Test comment content', $response->getContent());
     }
+
+    /**
+     * Test '/comment/create' route.
+     */
+    public function testCommentCreateRoute(): void
+    {
+        // given
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+
+        $user = $userRepository->findOneBy(['email' => 'user0@example.com']);
+        if (!$user) {
+            $user = new User();
+            $user->setEmail('user0@example.com');
+            $user->setRoles(['ROLE_USER']);
+            $user->setPassword(password_hash('password', PASSWORD_BCRYPT));
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
+
+        $client->loginUser($user);
+
+        $category = new Category();
+        $category->setTitle('Test Category');
+        $entityManager->persist($category);
+
+        $tag = new Tag();
+        $tag->setTitle('Test Tag');
+        $entityManager->persist($tag);
+
+        $post = new Post();
+        $post->setTitle('Test Post');
+        $post->setContent('This is a test post.');
+        $post->setCategory($category);
+        $post->setCreatedAt(new \DateTimeImmutable());
+        $post->setUpdatedAt(new \DateTimeImmutable());
+        $post->addTag($tag);
+        $entityManager->persist($post);
+        $entityManager->flush();
+
+        $comment = new Comment();
+        $post->addComment($comment);
+        $comment->setAuthor($user);
+        $comment->setContent('Test comment content');
+        $comment->setCreatedAt(new \DateTimeImmutable());
+        $comment->setUpdatedAt(new \DateTimeImmutable());
+        $entityManager->persist($comment);
+
+        $expectedStatusCode = 200;
+
+        // when
+        $client->request('GET', '/comment/create/'.$post->getId());
+        $resultHttpStatusCode = $client->getResponse()->getStatusCode();
+
+        // then
+        $this->assertEquals($expectedStatusCode, $resultHttpStatusCode);
+    }
+
+    /**
+     * Test '/comment/{id}/edit' route.
+     */
+    public function testCommentEditRoute(): void
+    {
+        // given
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+
+        $user = $userRepository->findOneBy(['email' => 'user0@example.com']);
+        if (!$user) {
+            $user = new User();
+            $user->setEmail('user0@example.com');
+            $user->setRoles(['ROLE_USER']);
+            $user->setPassword(password_hash('password', PASSWORD_BCRYPT));
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
+
+        $client->loginUser($user);
+
+        $category = new Category();
+        $category->setTitle('Test Category');
+        $entityManager->persist($category);
+
+        $tag = new Tag();
+        $tag->setTitle('Test Tag');
+        $entityManager->persist($tag);
+
+        $post = new Post();
+        $post->setTitle('Test Post');
+        $post->setContent('This is a test post.');
+        $post->setCategory($category);
+        $post->setCreatedAt(new \DateTimeImmutable());
+        $post->setUpdatedAt(new \DateTimeImmutable());
+        $post->addTag($tag);
+        $entityManager->persist($post);
+        $entityManager->flush();
+
+        $comment = new Comment();
+        $post->addComment($comment);
+        $comment->setAuthor($user);
+        $comment->setContent('Test comment content');
+        $comment->setCreatedAt(new \DateTimeImmutable());
+        $comment->setUpdatedAt(new \DateTimeImmutable());
+        $entityManager->persist($comment);
+        $entityManager->flush();
+
+        $expectedStatusCode = 200;
+
+        // when
+        $client->request('GET', '/comment/'.$comment->getId().'/edit');
+        $resultHttpStatusCode = $client->getResponse()->getStatusCode();
+
+        // then
+        $this->assertEquals($expectedStatusCode, $resultHttpStatusCode);
+    }
+
+    /**
+     * Test '/comment/{id}/delete' route.
+     */
+    public function testCommentDeleteRoute(): void
+    {
+        // given
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+
+        $user = $userRepository->findOneBy(['email' => 'user0@example.com']);
+        if (!$user) {
+            $user = new User();
+            $user->setEmail('user0@example.com');
+            $user->setRoles(['ROLE_USER']);
+            $user->setPassword(password_hash('password', PASSWORD_BCRYPT));
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
+
+        $client->loginUser($user);
+
+        $category = new Category();
+        $category->setTitle('Test Category');
+        $entityManager->persist($category);
+
+        $tag = new Tag();
+        $tag->setTitle('Test Tag');
+        $entityManager->persist($tag);
+
+        $post = new Post();
+        $post->setTitle('Test Post');
+        $post->setContent('This is a test post.');
+        $post->setCategory($category);
+        $post->setCreatedAt(new \DateTimeImmutable());
+        $post->setUpdatedAt(new \DateTimeImmutable());
+        $post->addTag($tag);
+        $entityManager->persist($post);
+        $entityManager->flush();
+
+        $comment = new Comment();
+        $post->addComment($comment);
+        $comment->setAuthor($user);
+        $comment->setContent('Test comment content');
+        $comment->setCreatedAt(new \DateTimeImmutable());
+        $comment->setUpdatedAt(new \DateTimeImmutable());
+        $entityManager->persist($comment);
+        $entityManager->flush();
+
+        $expectedStatusCode = 200;
+
+        // when
+        $client->request('GET', '/comment/'.$comment->getId().'/delete');
+        $resultHttpStatusCode = $client->getResponse()->getStatusCode();
+
+        // then
+        $this->assertEquals($expectedStatusCode, $resultHttpStatusCode);
+    }
 }

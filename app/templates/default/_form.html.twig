@@ -6,12 +6,6 @@ parameters:
     - form: form view variable
     - submit_label: label for submit button
 #}
-{% extends 'base.html.twig' %}
-
-{% block title %}
-    {{ page_title }}
-{% endblock %}
-
 {% block body %}
     <h1>{{ page_title }}</h1>
     {{ form_start(form) }}
