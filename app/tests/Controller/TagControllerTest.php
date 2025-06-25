@@ -170,4 +170,16 @@ class TagControllerTest extends WebTestCase
         // then
         $this->assertEquals($expectedStatusCode, $resultHttpStatusCode);
     }
+
+    /**
+     * Test slug getter and setter.
+     */
+    public function testSlugGetterAndSetter(): void
+    {
+        $tag = new Tag();
+        $slug = 'Test slug';
+
+        $tag->setSlug($slug);
+        $this->assertSame($slug, $tag->getSlug());
+    }
 }

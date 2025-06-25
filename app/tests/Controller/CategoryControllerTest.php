@@ -170,4 +170,16 @@ class CategoryControllerTest extends WebTestCase
         // then
         $this->assertEquals($expectedStatusCode, $resultHttpStatusCode);
     }
+
+    /**
+     * Test slug getter and setter.
+     */
+    public function testSlugGetterAndSetter(): void
+    {
+        $category = new Category();
+        $slug = 'Test slug';
+
+        $category->setSlug($slug);
+        $this->assertSame($slug, $category->getSlug());
+    }
 }

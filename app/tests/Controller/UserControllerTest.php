@@ -187,4 +187,15 @@ class UserControllerTest extends WebTestCase
         $this->assertEquals($expectedStatusCode, $resultHttpStatusCode);
         $this->assertStringContainsString('admin0@example.com', $response->getContent());
     }
+
+    /**
+     * Test erase credentials.
+     */
+    public function testEraseCredentials(): void
+    {
+        $user = new User();
+        $user->setPassword('test_password');
+        $user->eraseCredentials();
+        $this->assertSame('test_password', $user->getPassword());
+    }
 }
