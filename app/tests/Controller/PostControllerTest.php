@@ -250,4 +250,44 @@ class PostControllerTest extends WebTestCase
         // then
         $this->assertEquals($expectedStatusCode, $resultHttpStatusCode);
     }
+
+    /**
+     * Test removing tag.
+     */
+    public function testRemoveTag(): void
+    {
+        $tag = new Tag();
+        $tag->setTitle('Test Tag');
+
+        $post = new Post();
+        $post->addTag($tag);
+        $this->assertTrue($post->getTags()->contains($tag));
+
+        $post->removeTag($tag);
+        $this->assertFalse($post->getTags()->contains($tag));
+    }
+
+    /**
+     * Test removing comment.
+     */
+    public function testRemoveComment(): void
+    {
+        $user = new User();
+        $user->setEmail('test@example.com');
+        $user->setPassword('test');
+        $user->setRoles(['ROLE_USER']);
+
+        $comment = new Comment();
+        $comment->setContent('Test comment');
+        $comment->setAuthor($user);
+        $comment->setCreatedAt(new \DateTimeImmutable());
+        $comment->setUpdatedAt(new \DateTimeImmutable());
+
+        $post = new Post();
+        $post->addComment($comment);
+        $this->assertTrue($post->getComments()->contains($comment));
+
+        $post->removeComment($comment);
+        $this->assertFalse($post->getComments()->contains($comment));
+    }
 }
