@@ -34,8 +34,8 @@
             {% for post in pagination.items %}
                 <tr>
                     <td>{{ post.id }}</td>
-                    <td>{{ post.createdAt|date('Y/m/d') }}</td>
-                    <td>{{ post.updatedAt|date('Y/m/d') }}</td>
+                    <td>{{ post.createdAt|format_date('long') }}</td>
+                    <td>{{ post.updatedAt|format_date('long') }}</td>
                     <td>{{ post.title }}</td>
                     <td>{{ post.category.title }}</td>
                     <td>
