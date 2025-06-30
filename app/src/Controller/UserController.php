@@ -8,6 +8,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\Type\NewUserType;
+use App\Form\Type\NewPasswordType;
 use App\Form\Type\UserType;
 use App\Service\UserServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -155,7 +156,7 @@ class UserController extends AbstractController
     public function editPassword(Request $request, User $user): Response
     {
         $form = $this->createForm(
-            NewUserType::class,
+            NewPasswordType::class,
             $user,
             [
                 'method' => 'PUT',
