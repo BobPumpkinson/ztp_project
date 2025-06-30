@@ -80,18 +80,11 @@ class Post
     private ?string $content = null;
 
     /**
-     * Comments.
-     */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post', cascade: ['remove'])]
-    private $comments;
-
-    /**
      * Constructor.
      */
     public function __construct()
     {
         $this->tags = new ArrayCollection();
-        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -236,51 +229,6 @@ class Post
     public function setContent(string $content): self
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * Get the comments associated with this post.
-     *
-     * @return Collection comments
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    /**
-     * Add Comment.
-     *
-     * @param Comment $comment comment
-     *
-     * @return $this
-     */
-    public function addComment(Comment $comment): self
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setPost($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove Comment.
-     *
-     * @param Comment $comment comment
-     *
-     * @return $this
-     */
-    public function removeComment(Comment $comment): self
-    {
-        if ($this->comments->removeElement($comment)) {
-            if ($comment->getPost() === $this) {
-                $comment->setPost(null);
-            }
-        }
 
         return $this;
     }

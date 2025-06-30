@@ -55,7 +55,7 @@ class Comment
     /**
      * Post id.
      */
-    #[ORM\ManyToOne(targetEntity: Post::class, fetch: 'EXTRA_LAZY', inversedBy: 'comments')]
+    #[ORM\ManyToOne(targetEntity: Post::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(name: 'post_id', referencedColumnName: 'id', nullable: false)]
     private ?Post $post;
 
