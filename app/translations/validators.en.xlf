@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="validators.pl.xlf">
+    <body>
+      <trans-unit id="user.email.unique">
+        <source>user.email.unique</source>
+        <target>This email address is already taken</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
