@@ -75,7 +75,7 @@ class CommentControllerTest extends WebTestCase
         }
 
         $comment = new Comment();
-        $post->addComment($comment);
+        $comment->setPost($post);
         $comment->setAuthor($adminUser);
         $comment->setContent('Test comment content');
         $comment->setCreatedAt(new \DateTimeImmutable());
@@ -138,7 +138,7 @@ class CommentControllerTest extends WebTestCase
         $entityManager->flush();
 
         $comment = new Comment();
-        $post->addComment($comment);
+        $comment->setPost($post);
         $comment->setAuthor($user);
         $comment->setContent('Test comment content');
         $comment->setCreatedAt(new \DateTimeImmutable());
@@ -197,7 +197,7 @@ class CommentControllerTest extends WebTestCase
         $entityManager->flush();
 
         $comment = new Comment();
-        $post->addComment($comment);
+        $comment->setPost($post);
         $comment->setAuthor($user);
         $comment->setContent('Test comment content');
         $comment->setCreatedAt(new \DateTimeImmutable());
@@ -257,7 +257,7 @@ class CommentControllerTest extends WebTestCase
         $entityManager->flush();
 
         $comment = new Comment();
-        $post->addComment($comment);
+        $comment->setPost($post);
         $comment->setAuthor($user);
         $comment->setContent('Test comment content');
         $comment->setCreatedAt(new \DateTimeImmutable());

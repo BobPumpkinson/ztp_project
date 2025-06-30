@@ -75,7 +75,7 @@ class PostControllerTest extends WebTestCase
         }
 
         $comment = new Comment();
-        $post->addComment($comment);
+        $comment->setPost($post);
         $comment->setAuthor($adminUser);
         $comment->setContent('Test comment content');
         $comment->setCreatedAt(new \DateTimeImmutable());
@@ -174,7 +174,7 @@ class PostControllerTest extends WebTestCase
         $entityManager->flush();
 
         $comment = new Comment();
-        $post->addComment($comment);
+        $comment->setPost($post);
         $comment->setAuthor($adminUser);
         $comment->setContent('Test comment content');
         $comment->setCreatedAt(new \DateTimeImmutable());
@@ -233,7 +233,7 @@ class PostControllerTest extends WebTestCase
         $entityManager->flush();
 
         $comment = new Comment();
-        $post->addComment($comment);
+        $comment->setPost($post);
         $comment->setAuthor($adminUser);
         $comment->setContent('Test comment content');
         $comment->setCreatedAt(new \DateTimeImmutable());
@@ -284,10 +284,10 @@ class PostControllerTest extends WebTestCase
         $comment->setUpdatedAt(new \DateTimeImmutable());
 
         $post = new Post();
-        $post->addComment($comment);
-        $this->assertTrue($post->getComments()->contains($comment));
+        $comment->setPost($post);
+        $this->assertSame($post, $comment->getPost());
 
-        $post->removeComment($comment);
-        $this->assertFalse($post->getComments()->contains($comment));
+        $comment->setPost(null);
+        $this->assertNull($comment->getPost());
     }
 }
