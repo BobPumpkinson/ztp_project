@@ -77,4 +77,40 @@ class PostService implements PostServiceInterface
     {
         $this->postRepository->delete($post);
     }
+
+    /**
+     * Find one by id.
+     *
+     * @param int $id Id
+     *
+     * @return Post $post Post entity
+     */
+    public function findOneById(int $id): ?Post
+    {
+        return $this->postRepository->findOneWithRelations($id);
+    }
+
+    /**
+     * Find one with relations.
+     *
+     * @param int $id Id
+     *
+     * @return Post $post Post entity
+     */
+    public function findOneWithRelations(int $id): ?Post
+    {
+        return $this->postRepository->findOneWithRelations($id);
+    }
+
+    /**
+     * Find comments by post.
+     *
+     * @param int $postId Post id
+     *
+     * @return array Array
+     */
+    public function findCommentsByPost(int $postId): array
+    {
+        return $this->postRepository->findCommentsByPost($postId);
+    }
 }
