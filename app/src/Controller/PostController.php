@@ -8,6 +8,7 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Form\Type\PostType;
+use App\Repository\CommentRepository;
 use App\Service\PostServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -27,10 +28,11 @@ class PostController extends AbstractController
     /**
      * Constructor.
      *
-     * @param PostServiceInterface $postService Post service
-     * @param TranslatorInterface  $translator  Translator
+     * @param PostServiceInterface $postService       Post service
+     * @param TranslatorInterface  $translator        Translator
+     * @param CommentRepository    $commentRepository Comment repository
      */
-    public function __construct(private readonly PostServiceInterface $postService, private readonly TranslatorInterface $translator)
+    public function __construct(private readonly PostServiceInterface $postService, private readonly TranslatorInterface $translator, private readonly CommentRepository $commentRepository)
     {
     }
 
@@ -52,16 +54,27 @@ class PostController extends AbstractController
     /**
      * View action.
      *
-     * @param Post $post Post entity
+     * @param int $id Id
      *
      * @return Response HTTP response
      */
     #[Route('/{id}', name: 'post_view', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
-    public function view(Post $post): Response
+    public function view(int $id): Response
     {
+        $post = $this->postService->findOneById($id);
+
+        if (!$post) {
+            throw $this->createNotFoundException('Post not found');
+        }
+
+        $comments = $this->commentRepository->findByPost($post);
+
         return $this->render(
             'post/view.html.twig',
-            ['post' => $post]
+            [
+                'post' => $post,
+                'comments' => $comments,
+            ]
         );
     }
 
