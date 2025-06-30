@@ -102,4 +102,42 @@ class PostRepository extends ServiceEntityRepository
         $this->getEntityManager()->remove($post);
         $this->getEntityManager()->flush();
     }
+
+    /**
+     * Find one with relations.
+     *
+     * @param int $id Id
+     *
+     * @return Post|null Post
+     */
+    public function findOneWithRelations(int $id): ?Post
+    {
+        return $this->createQueryBuilder('post')
+            ->leftJoin('post.category', 'category')->addSelect('category')
+            ->leftJoin('post.tags', 'tags')->addSelect('tags')
+            ->where('post.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Find comments by post.
+     *
+     * @param int $postId Post id
+     *
+     * @return array Array
+     */
+    public function findCommentsByPost(int $postId): array
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select('comment', 'author')
+            ->from('App\Entity\Comment', 'comment')
+            ->leftJoin('comment.author', 'author')
+            ->where('comment.post = :postId')
+            ->setParameter('postId', $postId)
+            ->orderBy('comment.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

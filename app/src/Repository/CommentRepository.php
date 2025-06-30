@@ -7,6 +7,7 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -93,6 +94,24 @@ class CommentRepository extends ServiceEntityRepository
             ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * Find by post.
+     *
+     * @param Post $post post
+     *
+     * @return array Array
+     */
+    public function findByPost(Post $post): array
+    {
+        return $this->createQueryBuilder('comment')
+            ->andWhere('comment.post = :post')
+            ->setParameter('post', $post)
+            ->leftJoin('comment.author', 'author')->addSelect('author')
+            ->orderBy('comment.createdAt', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     /**
